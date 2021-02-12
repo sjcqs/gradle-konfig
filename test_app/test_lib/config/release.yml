@@ -1,0 +1,5 @@
+lib_properties:
+  lib_property_1: "Release value"
+debug:
+  trace: false
+  analytics: true

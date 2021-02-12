@@ -1,0 +1,5 @@
+lib_properties:
+  lib_property_1: "Debug value"
+debug:
+  trace: true
+  analytics: false

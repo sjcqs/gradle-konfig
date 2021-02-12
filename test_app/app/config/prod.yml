@@ -1,0 +1,6 @@
+properties:
+  property_1: "Production value"
+
+backend: https://polidea.com
+device:
+  critical_battery_level: 30

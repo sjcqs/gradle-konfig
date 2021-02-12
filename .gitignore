@@ -1,0 +1,11 @@
+.gradle
+local.properties
+**/build
+*.iml
+.DS_Store
+/captures
+.externalNativeBuild
+annotations
+
+## Test local repository
+test-repository

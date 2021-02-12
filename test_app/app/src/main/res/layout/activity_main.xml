@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    android:paddingTop="100dp"
+    tools:context="com.polidea.configsample.MainActivity">
+
+    <TextView
+        android:id="@+id/appVariantLabel"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="app variant:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/appVariant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="_Debug"
+        app:layout_constraintLeft_toRightOf="@+id/appVariantLabel"
+        app:layout_constraintTop_toTopOf="@+id/appVariantLabel"
+        android:layout_marginLeft="16dp"/>
+
+
+
+    <TextView
+        android:id="@+id/appPropertyLabel"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="app property:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appVariantLabel"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/appProperty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="_Debug"
+        app:layout_constraintLeft_toRightOf="@+id/appVariantLabel"
+        app:layout_constraintTop_toTopOf="@+id/appPropertyLabel"
+        android:layout_marginLeft="16dp"/>
+
+
+
+    <TextView
+        android:id="@+id/libVariantLabel"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="app variant:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appPropertyLabel"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/libVariant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="_Debug"
+        app:layout_constraintLeft_toRightOf="@+id/libVariantLabel"
+        app:layout_constraintTop_toTopOf="@+id/libVariantLabel"
+        android:layout_marginLeft="16dp"/>
+
+
+
+    <TextView
+        android:id="@+id/libPropertyLabel"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="lib property:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/libVariantLabel"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/libProperty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="_Debug"
+        app:layout_constraintLeft_toRightOf="@+id/libPropertyLabel"
+        app:layout_constraintTop_toTopOf="@+id/libPropertyLabel"
+        android:layout_marginLeft="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
