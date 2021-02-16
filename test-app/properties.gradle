@@ -1,0 +1,10 @@
+def loadProperties(name) {
+    def properties = new Properties()
+    def file = rootProject.file(name)
+    if (file.exists()) {
+        properties.load(new FileInputStream(file))
+    }
+    return properties
+}
+
+ext.rootProperties = loadProperties("../gradle.properties")

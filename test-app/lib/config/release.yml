@@ -1,5 +1,5 @@
 lib_properties:
-  lib_property_1: "Release value"
+  lib_property_1: "Default value"
 debug:
   trace: false
   analytics: true
