@@ -31,7 +31,7 @@ internal class KotlinFileTranspilerTest {
         private val EMPTY_ELEMENT = Token.Root(emptyList())
         private val EMPTY_FILE =
             """
-            |object Settings
+            |public object Settings
             |
             """.trimMargin()
         private val SIMPLE_ELEMENT = Token.Root(
@@ -50,15 +50,15 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.String
             |import kotlin.jvm.JvmField
             |
-            |object Settings {
-            |  const val key0: Int = 0
+            |public object Settings {
+            |  public const val key0: Int = 0
             |
-            |  const val key1: String = "value1"
+            |  public const val key1: String = "value1"
             |
             |  @JvmField
-            |  val key2: Date = Date(1559952000000L)
+            |  public val key2: Date = Date(1559952000000L)
             |
-            |  const val key3: Boolean = false
+            |  public const val key3: Boolean = false
             |}
             |
             """.trimMargin()
@@ -88,12 +88,12 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.collections.List
             |import kotlin.jvm.JvmField
             |
-            |object Settings {
+            |public object Settings {
             |  @JvmField
-            |  val ints: List<Int> = listOf(1, 2, 3)
+            |  public val ints: List<Int> = listOf(1, 2, 3)
             |
             |  @JvmField
-            |  val strings: List<String> = listOf("value0", "value1", "value2", "value3")
+            |  public val strings: List<String> = listOf("value0", "value1", "value2", "value3")
             |}
             |
             """.trimMargin()
@@ -115,14 +115,14 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.collections.List
             |import kotlin.jvm.JvmField
             |
-            |object Settings {
+            |public object Settings {
             |  @JvmField
-            |  val mapList: List<MapList> = listOf(MapList("value0"), MapList("value1"), MapList("value2"),
-            |      MapList("value3"))
+            |  public val mapList: List<MapList> = listOf(MapList("value0"), MapList("value1"),
+            |      MapList("value2"), MapList("value3"))
             |
-            |  data class MapList(
+            |  public data class MapList(
             |    @JvmField
-            |    val key: String
+            |    public val key: String
             |  )
             |}
             |
@@ -197,90 +197,90 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.String
             |import kotlin.jvm.JvmField
             |
-            |object Settings {
+            |public object Settings {
             |  @JvmField
-            |  val root0: Root0 = Root0(Value0("value", "value"), Value1("value", "value"), Value2("value",
-            |      "value"), Value3("value", "value"))
+            |  public val root0: Root0 = Root0(Value0("value", "value"), Value1("value", "value"),
+            |      Value2("value", "value"), Value3("value", "value"))
             |
             |  @JvmField
-            |  val root1: Root1 = Root1(Settings.Root1.Value0(1, 2), Settings.Root1.Value1(1, 2),
+            |  public val root1: Root1 = Root1(Settings.Root1.Value0(1, 2), Settings.Root1.Value1(1, 2),
             |      Settings.Root1.Value2(1, 2), Settings.Root1.Value3(1, 2))
             |
-            |  data class Root0(
+            |  public data class Root0(
             |    @JvmField
-            |    val value0: Value0,
+            |    public val value0: Value0,
             |    @JvmField
-            |    val value1: Value1,
+            |    public val value1: Value1,
             |    @JvmField
-            |    val value2: Value2,
+            |    public val value2: Value2,
             |    @JvmField
-            |    val value3: Value3
+            |    public val value3: Value3
             |  ) {
-            |    data class Value0(
+            |    public data class Value0(
             |      @JvmField
-            |      val subKey1: String,
+            |      public val subKey1: String,
             |      @JvmField
-            |      val subKey2: String
+            |      public val subKey2: String
             |    )
             |
-            |    data class Value1(
+            |    public data class Value1(
             |      @JvmField
-            |      val subKey1: String,
+            |      public val subKey1: String,
             |      @JvmField
-            |      val subKey2: String
+            |      public val subKey2: String
             |    )
             |
-            |    data class Value2(
+            |    public data class Value2(
             |      @JvmField
-            |      val subKey1: String,
+            |      public val subKey1: String,
             |      @JvmField
-            |      val subKey2: String
+            |      public val subKey2: String
             |    )
             |
-            |    data class Value3(
+            |    public data class Value3(
             |      @JvmField
-            |      val subKey1: String,
+            |      public val subKey1: String,
             |      @JvmField
-            |      val subKey2: String
+            |      public val subKey2: String
             |    )
             |  }
             |
-            |  data class Root1(
+            |  public data class Root1(
             |    @JvmField
-            |    val value0: Value0,
+            |    public val value0: Value0,
             |    @JvmField
-            |    val value1: Value1,
+            |    public val value1: Value1,
             |    @JvmField
-            |    val value2: Value2,
+            |    public val value2: Value2,
             |    @JvmField
-            |    val value3: Value3
+            |    public val value3: Value3
             |  ) {
-            |    data class Value0(
+            |    public data class Value0(
             |      @JvmField
-            |      val subKey1: Int,
+            |      public val subKey1: Int,
             |      @JvmField
-            |      val subKey2: Int
+            |      public val subKey2: Int
             |    )
             |
-            |    data class Value1(
+            |    public data class Value1(
             |      @JvmField
-            |      val subKey1: Int,
+            |      public val subKey1: Int,
             |      @JvmField
-            |      val subKey2: Int
+            |      public val subKey2: Int
             |    )
             |
-            |    data class Value2(
+            |    public data class Value2(
             |      @JvmField
-            |      val subKey1: Int,
+            |      public val subKey1: Int,
             |      @JvmField
-            |      val subKey2: Int
+            |      public val subKey2: Int
             |    )
             |
-            |    data class Value3(
+            |    public data class Value3(
             |      @JvmField
-            |      val subKey1: Int,
+            |      public val subKey1: Int,
             |      @JvmField
-            |      val subKey2: Int
+            |      public val subKey2: Int
             |    )
             |  }
             |}
@@ -316,14 +316,14 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.collections.List
             |import kotlin.jvm.JvmField
             |
-            |object Settings {
+            |public object Settings {
             |  @JvmField
-            |  val pairs: List<PairsMeeting> = listOf(PairsMeeting("with team."), PairsMeeting("with boss."),
-            |      PairsMeeting("with client."))
+            |  public val pairs: List<PairsMeeting> = listOf(PairsMeeting("with team."),
+            |      PairsMeeting("with boss."), PairsMeeting("with client."))
             |
-            |  data class PairsMeeting(
+            |  public data class PairsMeeting(
             |    @JvmField
-            |    val meeting: String
+            |    public val meeting: String
             |  )
             |}
             |
