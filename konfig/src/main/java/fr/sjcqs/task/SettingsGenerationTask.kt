@@ -9,7 +9,6 @@ import fr.sjcqs.parser.Parser
 import fr.sjcqs.transpiler.FileTranspiler
 import fr.sjcqs.utils.Logger
 import fr.sjcqs.utils.MapMerger
-import fr.sjcqs.utils.packageToPath
 import fr.sjcqs.utils.pathJoin
 import java.io.File
 import javax.inject.Inject
@@ -40,17 +39,7 @@ abstract class SettingsGenerationTask @Inject constructor() : DefaultTask() {
     abstract val settingsFiles: ConfigurableFileCollection
 
     @get:OutputDirectory
-    lateinit var pluginDirectory: File
-
-    @get:OutputDirectory
-    val outputDir: File
-        get() {
-            return project.file(getOutputFile(pluginDirectory, packageName))
-        }
-
-    private fun getOutputFile(directory: File, packageName: String): String {
-        return pathJoin(directory.absolutePath, packageName.packageToPath())
-    }
+    lateinit var outputDir: File
 
     @TaskAction
     fun execute(inputChanges: InputChanges) {
@@ -95,7 +84,7 @@ abstract class SettingsGenerationTask @Inject constructor() : DefaultTask() {
             return project.tasks.create(name, SettingsGenerationTask::class.java) { task ->
                 task.apply {
                     packageName = variant.generateBuildConfigProvider.get().buildConfigPackageName.get()
-                    pluginDirectory = project.file(getOutputDirectoryName(project.buildDir, variant.dirName))
+                    outputDir = project.file(getOutputDirectoryName(project.buildDir, variant.dirName))
 
                     val flavorName = variant.flavorName
                     val buildType = variant.buildType.name
