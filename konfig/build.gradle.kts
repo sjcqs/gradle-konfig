@@ -1,10 +1,46 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm")
     id("java-gradle-plugin")
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.12.0"
+}
+
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+
+repositories {
+    mavenCentral()
+    google()
+    jcenter()
+}
+
+
+
+dependencies {
+    val snakeYamlVersion: String by project
+    val androidBuildToolsVersion: String by project
+    val jupiterVersion: String by project
+    val kotlinPoetVersion: String by project
+
+    implementation(kotlin("stdlib"))
+    implementation("com.squareup", "kotlinpoet", kotlinPoetVersion)
+    implementation("org.yaml", "snakeyaml", snakeYamlVersion)
+    compileOnly("com.android.tools.build", "gradle", androidBuildToolsVersion)
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", jupiterVersion)
+    testImplementation("org.junit.jupiter", "junit-jupiter-params", jupiterVersion)
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", jupiterVersion)
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+tasks.withType<Test>() {
+    useJUnitPlatform()
+    testLogging {
+        events = setOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+        showStandardStreams = true
+    }
+    maxHeapSize = "1G"
 }
 
 val pluginGroup: String by project
@@ -14,20 +50,6 @@ val pluginVersion: String by project
 
 group = pluginGroup
 version = pluginVersion
-
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
-
-
-repositories {
-    mavenCentral()
-}
-
-repositories {
-    mavenCentral()
-    google()
-    jcenter()
-}
-
 
 gradlePlugin {
     plugins {
@@ -51,7 +73,6 @@ pluginBundle {
     }
 }
 
-
 publishing {
     repositories {
         maven {
@@ -59,33 +80,4 @@ publishing {
             url = uri("$rootDir/test-repository")
         }
     }
-}
-
-dependencies {
-    val snakeYamlVersion: String by project
-    val androidBuildToolsVersion: String by project
-    val jupiterVersion: String by project
-    val kotlinPoetVersion: String by project
-
-    implementation(kotlin("stdlib"))
-    implementation("com.squareup", "kotlinpoet", kotlinPoetVersion)
-    implementation("org.yaml", "snakeyaml", snakeYamlVersion)
-    compileOnly("com.android.tools.build", "gradle", androidBuildToolsVersion)
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", jupiterVersion)
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", jupiterVersion)
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", jupiterVersion)
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-    testLogging {
-        events = setOf(
-            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-        )
-        showStandardStreams = true
-    }
-    maxHeapSize = "1G"
 }
