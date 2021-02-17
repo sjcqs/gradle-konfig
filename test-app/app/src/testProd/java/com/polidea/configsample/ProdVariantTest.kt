@@ -15,7 +15,7 @@ class ProdVariantTest {
 
     @Test
     fun `device should match the defined one`() {
-        val expectedDevice = Settings.Device(Settings.DeviceConnect("192.168.1.2", 9876), 30)
+        val expectedDevice = Settings.Device(Settings.Device.Connect("192.168.1.3", 9876), 30)
         val actualDevice = Settings.device
         Assert.assertEquals(expectedDevice.connect.ip, actualDevice.connect.ip)
         Assert.assertEquals(expectedDevice.connect.port, actualDevice.connect.port)
@@ -32,7 +32,7 @@ class ProdVariantTest {
 
     @Test
     fun `districs should match the defined ones`() {
-        Assert.assertArrayEquals(arrayOf("Praga", "Wola"), Settings.districs.toArray())
+        Assert.assertArrayEquals(arrayOf("Praga", "Wola"), Settings.districs.toTypedArray())
     }
 
     @Test
@@ -44,11 +44,11 @@ class ProdVariantTest {
     fun `credentials should match the defined ones`() {
         val actualCredentials = Settings.debug_credentials
 
-        val firstExpectedCredential = Settings.DebugCredentialsElement("userA", "Kabum1")
+        val firstExpectedCredential = Settings.DebugCredentials("userA", "Kabum1")
         Assert.assertEquals(firstExpectedCredential.name, actualCredentials[0].name)
         Assert.assertEquals(firstExpectedCredential.pass, actualCredentials[0].pass)
 
-        val secondExpectedCredential = Settings.DebugCredentialsElement("userB", "Kabum2")
+        val secondExpectedCredential = Settings.DebugCredentials("userB", "Kabum2")
         Assert.assertEquals(secondExpectedCredential.name, actualCredentials[1].name)
         Assert.assertEquals(secondExpectedCredential.pass, actualCredentials[1].pass)
     }
