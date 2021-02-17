@@ -17,7 +17,7 @@ open class KonfigPlugin : Plugin<Project> {
         val (variants, sourceSets) = configuration
         variants.all { variant ->
             val task = SettingsGenerationTask.create(project, variant)
-            val outputDirectory = task.pluginDirectory
+            val outputDirectory = task.outputDir
             variant.registerJavaGeneratingTask(task, outputDirectory)
             sourceSets[variant.name].java.srcDir(outputDirectory)
         }
