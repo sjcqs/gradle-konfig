@@ -14,12 +14,11 @@ open class KonfigPlugin : Plugin<Project> {
     }
 
     private fun Project.createTasks(configuration: TaskConfiguration) {
-        val (variants, sourceSets) = configuration
-        variants.all { variant ->
+        configuration.variants.all { variant ->
             val task = SettingsGenerationTask.create(project, variant)
             val outputDirectory = task.outputDir
             variant.registerJavaGeneratingTask(task, outputDirectory)
-            sourceSets[variant.name].java.srcDir(outputDirectory)
+            configuration.sourceSets[variant.name].java.srcDir(outputDirectory)
         }
     }
 }

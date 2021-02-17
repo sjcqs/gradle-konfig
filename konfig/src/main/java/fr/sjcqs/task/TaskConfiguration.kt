@@ -5,7 +5,7 @@ import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 
-data class TaskConfiguration(
-    val variants: DomainObjectCollection<out BaseVariant>,
-    val sourceSet: NamedDomainObjectContainer<AndroidSourceSet>
-)
+interface TaskConfiguration {
+    val variants: DomainObjectCollection<out BaseVariant>
+    val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
+}
