@@ -13,7 +13,7 @@ sealed class Token {
         override val key: String = ROOT_KEY
 
         companion object {
-            const val ROOT_KEY = "Settings"
+            const val ROOT_KEY = "Configuration"
         }
     }
 

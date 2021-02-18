@@ -12,17 +12,17 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 internal class KotlinFileTranspilerTest {
-    private lateinit var compilerKotlinPoet: KotlinFileTranspiler
+    private lateinit var transpiler: KotlinFileTranspiler
 
     @BeforeEach
     internal fun setUp() {
-        compilerKotlinPoet = KotlinFileTranspiler(NoOpLogger())
+        transpiler = KotlinFileTranspiler(NoOpLogger())
     }
 
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource
     internal fun `config should create the expected file`(element: Token.Root, expected: String) {
-        val fileSpec = compilerKotlinPoet.transpile(root = element,)
+        val fileSpec = transpiler.transpile(root = element,)
         val actual = fileSpec.toString()
         assertEquals(expected, actual)
     }
@@ -31,7 +31,7 @@ internal class KotlinFileTranspilerTest {
         private val EMPTY_ELEMENT = Token.Root(emptyList())
         private val EMPTY_FILE =
             """
-            |public object Settings
+            |public object Configuration
             |
             """.trimMargin()
         private val SIMPLE_ELEMENT = Token.Root(
@@ -50,7 +50,7 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.String
             |import kotlin.jvm.JvmField
             |
-            |public object Settings {
+            |public object Configuration {
             |  public const val key0: Int = 0
             |
             |  public const val key1: String = "value1"
@@ -88,7 +88,7 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.collections.List
             |import kotlin.jvm.JvmField
             |
-            |public object Settings {
+            |public object Configuration {
             |  @JvmField
             |  public val ints: List<Int> = listOf(1, 2, 3)
             |
@@ -115,7 +115,7 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.collections.List
             |import kotlin.jvm.JvmField
             |
-            |public object Settings {
+            |public object Configuration {
             |  @JvmField
             |  public val mapList: List<MapList> = listOf(MapList("value0"), MapList("value1"),
             |      MapList("value2"), MapList("value3"))
@@ -189,22 +189,22 @@ internal class KotlinFileTranspilerTest {
         )
         private val MAP_FILE =
             """
-            |import Settings.Root0.Value0
-            |import Settings.Root0.Value1
-            |import Settings.Root0.Value2
-            |import Settings.Root0.Value3
+            |import Configuration.Root0.Value0
+            |import Configuration.Root0.Value1
+            |import Configuration.Root0.Value2
+            |import Configuration.Root0.Value3
             |import kotlin.Int
             |import kotlin.String
             |import kotlin.jvm.JvmField
             |
-            |public object Settings {
+            |public object Configuration {
             |  @JvmField
             |  public val root0: Root0 = Root0(Value0("value", "value"), Value1("value", "value"),
             |      Value2("value", "value"), Value3("value", "value"))
             |
             |  @JvmField
-            |  public val root1: Root1 = Root1(Settings.Root1.Value0(1, 2), Settings.Root1.Value1(1, 2),
-            |      Settings.Root1.Value2(1, 2), Settings.Root1.Value3(1, 2))
+            |  public val root1: Root1 = Root1(Configuration.Root1.Value0(1, 2), Configuration.Root1.Value1(1,
+            |      2), Configuration.Root1.Value2(1, 2), Configuration.Root1.Value3(1, 2))
             |
             |  public data class Root0(
             |    @JvmField
@@ -316,7 +316,7 @@ internal class KotlinFileTranspilerTest {
             |import kotlin.collections.List
             |import kotlin.jvm.JvmField
             |
-            |public object Settings {
+            |public object Configuration {
             |  @JvmField
             |  public val pairs: List<PairsMeeting> = listOf(PairsMeeting("with team."),
             |      PairsMeeting("with boss."), PairsMeeting("with client."))

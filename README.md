@@ -1,6 +1,6 @@
 # Konfig Plugin
 
-This gradle plugin generates a Kotlin `Settings` object using yaml files for Android.
+This gradle plugin generates a Kotlin `Configuration` object using yaml files for Android.
 It can merge multiple variants yaml files.
 
 This plugin is a rewrite in Kotlin of [sjcqs/gradle-config](https://github.com/sjcqs/gradle-config)
@@ -33,7 +33,7 @@ plugins {
 
 ## Config files
 
-To generate the `Settings` class, you need to create a directory named `config` in the module (e.g app) directory and add your yaml files inside:
+To generate the `Configuration` class, you need to create a directory named `config` in the module (e.g app) directory and add your yaml files inside:
 ```
 config/default.yml
 config/default_secret.yml
@@ -113,16 +113,16 @@ section_2:
 entry_3: 42
 ```
 
-On compilation, ```brand1StubsDebug``` build will generate the following ````Settings```` fields.
+On compilation, ```brand1StubsDebug``` build will generate the following ````Configuration```` fields.
 variant.
 
 ```kotlin
-Settings.section_1.entry_1 // => "Hello" in default.yml
-Settings.section_1.entry_2 // => "Pete" overwritten by brand1.yml
-Settings.entry_3 // => 42 overwritten by brand1StubsDebug.yml
-Settings.section_2.entry_1 // => "Paul" overwritten by debug.yml
-Settings.section_2.entry_2 // => "Johnson" overwritten by debug.yml
-Settings.entry_4 // => "Some value" original value
+Configuration.section_1.entry_1 // => "Hello" in default.yml
+Configuration.section_1.entry_2 // => "Pete" overwritten by brand1.yml
+Configuration.entry_3 // => 42 overwritten by brand1StubsDebug.yml
+Configuration.section_2.entry_1 // => "Paul" overwritten by debug.yml
+Configuration.section_2.entry_2 // => "Johnson" overwritten by debug.yml
+Configuration.entry_4 // => "Some value" original value
 ```
 
 You can suffix files with `_secret` (`<module>/config/debug_secret.yml`) in order to avoid to commit a secret file to remote repository. If you want to use this feature, don't forget to include those files to your `<module>/config/.gitignore`:
@@ -159,17 +159,17 @@ list_of_map_entry:
 The [snakeyaml](https://bitbucket.org/asomov/snakeyaml) library this plugin uses provides the following basic type conversions:
 
 ```kotlin
-Int i = Settings.int_entry;
-String s = Settings.string_entry;
-Double d = Settings.double_entry;
-Date da = Settings.date_entry;
-List<Int> list = Settings.list_entry;
+Int i = Configuration.int_entry;
+String s = Configuration.string_entry;
+Double d = Configuration.double_entry;
+Date da = Configuration.date_entry;
+List<Int> list = Configuration.list_entry;
 ```
 
 The list with mixed type elements are not supported and throw an exception.
 
 ```
-Error:Execution failed for task ':app:generateDevDebugSettings'.
+Error:Execution failed for task ':app:generateDevDebugConfiguration'.
 > Not supported list with mixed type: [class Int, class java.lang.String]
 ```
 

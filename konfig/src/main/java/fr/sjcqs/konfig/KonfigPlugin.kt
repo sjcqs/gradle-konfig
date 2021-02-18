@@ -1,6 +1,6 @@
 package fr.sjcqs.konfig
 
-import fr.sjcqs.task.SettingsGenerationTask
+import fr.sjcqs.task.ConfigurationGenerationTask
 import fr.sjcqs.task.TaskConfiguration
 import fr.sjcqs.task.TaskConfigurationProvider
 import fr.sjcqs.utils.get
@@ -15,7 +15,7 @@ open class KonfigPlugin : Plugin<Project> {
 
     private fun Project.createTasks(configuration: TaskConfiguration) {
         configuration.variants.all { variant ->
-            val task = SettingsGenerationTask.create(project, variant)
+            val task = ConfigurationGenerationTask.create(project, variant)
             val outputDirectory = task.outputDir
             variant.registerJavaGeneratingTask(task, outputDirectory)
             configuration.sourceSets[variant.name].java.srcDir(outputDirectory)

@@ -24,7 +24,7 @@ import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.Yaml
 
-abstract class SettingsGenerationTask @Inject constructor() : DefaultTask() {
+abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask() {
     private val logger: Logger = DependencyContainer.taskLogger
     private val yaml: Yaml = DependencyContainer.yaml
     private val parser: Parser = DependencyContainer.parser
@@ -48,10 +48,10 @@ abstract class SettingsGenerationTask @Inject constructor() : DefaultTask() {
             logger.i("${change.changeType}: ${change.normalizedPath}")
         }
 
-        val variantSettings = settingsFiles.map {
+        val variantConfiguration = settingsFiles.map {
             yaml.loadConfig(it)
         }
-        val settings = merger.deepMerge(variantSettings)
+        val settings = merger.deepMerge(variantConfiguration)
 
         if (settings.isNotEmpty()) {
             val root = parser.parse(settings)
@@ -79,9 +79,9 @@ abstract class SettingsGenerationTask @Inject constructor() : DefaultTask() {
         private val LOAD_CLASS = mutableMapOf<String, Any?>()::class
 
         @Throws(InvalidUserDataException::class)
-        fun create(project: Project, variant: BaseVariant): SettingsGenerationTask {
+        fun create(project: Project, variant: BaseVariant): ConfigurationGenerationTask {
             val name = "generate${variant.name}${Token.Root.ROOT_KEY}"
-            return project.tasks.create(name, SettingsGenerationTask::class.java) { task ->
+            return project.tasks.create(name, ConfigurationGenerationTask::class.java) { task ->
                 task.apply {
                     packageName = variant.generateBuildConfigProvider.get().buildConfigPackageName.get()
                     outputDir = project.file(getOutputDirectoryName(project.buildDir, variant.dirName))

@@ -3,7 +3,7 @@ package com.polidea.configsample
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
-import com.polidea.samplelibrary.LibSettings
+import com.polidea.samplelibrary.LibConfiguration
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,9 +12,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         R.id.appVariant.setText("${BuildConfig.FLAVOR}_${BuildConfig.BUILD_TYPE}")
-        R.id.appProperty.setText(Settings.properties.property_1)
-        R.id.libVariant.setText(LibSettings().buildVariant)
-        R.id.libProperty.setText(LibSettings().propertyValue)
+        R.id.appProperty.setText(Configuration.properties.property_1)
+        R.id.libVariant.setText(LibConfiguration().buildVariant)
+        R.id.libProperty.setText(LibConfiguration().propertyValue)
     }
 
     private fun Int.setText(text: String) {
