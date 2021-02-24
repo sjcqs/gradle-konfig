@@ -1,0 +1,28 @@
+name: Integration
+on: push
+jobs:
+  validate:
+    name: "Build, run linter and test project"
+    runs-on: ubuntu-latest
+    container:
+      image: docker://fabernovel/android:api-29-v1.3.0
+    env:
+      JAVA_TOOL_OPTIONS: "-XX:MinRAMPercentage=20.0 -XX:MaxRAMPercentage=90.0"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process"
+    steps:
+      - name: Checkout the project
+        uses: actions/checkout@v2
+      - name: Gradle cache
+        uses: actions/cache@v2.1.1
+        with:
+          path: /root/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+      - name: Install Kotlin
+        run: |
+          curl -s "https://get.sdkman.io" | bash     # install sdkman
+          source "$HOME/.sdkman/bin/sdkman-init.sh"  # add sdkman to PATH
+          sdk install kotlin
+      - name: Validate project
+        run: ./scripts/integrations.main.kts
