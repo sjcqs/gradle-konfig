@@ -19,10 +19,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle
+      - name: Install curl and curl
+        run: apt-get update && apt-get install --no-install-recommends -y curl bash zip
       - name: Install Kotlin
-        uses: sdkman/sdkman-action@master
-        id: sdkman
-        with:
-          candidate: kotlin
+        shell: bash
+        run: |
+          curl -s "https://get.sdkman.io" | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk install kotlin 1.4.30
+          echo "$(sdk home kotlin 1.4.30)/bin" >> $GITHUB_PATH
       - name: Validate project
-        run: ./scripts/integrations.main.kts
+        run: kotlinc -script ./scripts/integration.main.kts
