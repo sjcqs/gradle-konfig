@@ -20,9 +20,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle
       - name: Install Kotlin
-        run: |
-          curl -s "https://get.sdkman.io" | bash     # install sdkman
-          source "$HOME/.sdkman/bin/sdkman-init.sh"  # add sdkman to PATH
-          sdk install kotlin
+        uses: sdkman/sdkman-action@master
+        id: sdkman
+        with:
+          candidate: kotlin
       - name: Validate project
         run: ./scripts/integrations.main.kts
