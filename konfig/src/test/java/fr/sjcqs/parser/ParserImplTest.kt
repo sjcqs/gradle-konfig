@@ -1,17 +1,16 @@
 package fr.sjcqs.parser
 
-
 import fr.sjcqs.ast.KonfigMap
 import fr.sjcqs.ast.Token
 import fr.sjcqs.utils.NoOpLogger
-import java.util.Date
-import java.util.stream.Stream
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.yaml.snakeyaml.Yaml
+import java.util.Date
+import java.util.stream.Stream
 
 internal class ParserImplTest {
     private lateinit var parser: ParserImpl
@@ -83,14 +82,16 @@ internal class ParserImplTest {
         private val LIST_ELEMENT = Token.Root(
             listOf(
                 Token.KList(
-                    "key0", listOf(
+                    "key0",
+                    listOf(
                         Token.Field("key0", 1, Int::class),
                         Token.Field("key0", 2, Int::class),
                         Token.Field("key0", 3, Int::class)
                     )
                 ),
                 Token.KList(
-                    "key1", listOf(
+                    "key1",
+                    listOf(
                         Token.Field("key1", "value0", String::class),
                         Token.Field("key1", "value1", String::class),
                         Token.Field("key1", "value2", String::class),
@@ -98,7 +99,8 @@ internal class ParserImplTest {
                     )
                 ),
                 Token.KList(
-                    "key2", listOf(
+                    "key2",
+                    listOf(
                         Token.Class("key2", listOf(Token.Field("key", "value0", String::class))),
                         Token.Class("key2", listOf(Token.Field("key", "value1", String::class))),
                         Token.Class("key2", listOf(Token.Field("key", "value2", String::class))),
@@ -138,27 +140,32 @@ internal class ParserImplTest {
         private val MAP_ELEMENT = Token.Root(
             listOf(
                 Token.Class(
-                    "root0", listOf(
+                    "root0",
+                    listOf(
                         Token.Class(
-                            "value0", listOf(
+                            "value0",
+                            listOf(
                                 Token.Field("subKey1", "value", String::class),
                                 Token.Field("subKey2", "value", String::class)
                             )
                         ),
                         Token.Class(
-                            "value1", listOf(
+                            "value1",
+                            listOf(
                                 Token.Field("subKey1", "value", String::class),
                                 Token.Field("subKey2", "value", String::class)
                             )
                         ),
                         Token.Class(
-                            "value2", listOf(
+                            "value2",
+                            listOf(
                                 Token.Field("subKey1", "value", String::class),
                                 Token.Field("subKey2", "value", String::class)
                             )
                         ),
                         Token.Class(
-                            "value3", listOf(
+                            "value3",
+                            listOf(
                                 Token.Field("subKey1", "value", String::class),
                                 Token.Field("subKey2", "value", String::class)
                             )
@@ -166,27 +173,32 @@ internal class ParserImplTest {
                     )
                 ),
                 Token.Class(
-                    "root1", listOf(
+                    "root1",
+                    listOf(
                         Token.Class(
-                            "value0", listOf(
+                            "value0",
+                            listOf(
                                 Token.Field("subKey1", 1, Int::class),
                                 Token.Field("subKey2", 2, Int::class)
                             )
                         ),
                         Token.Class(
-                            "value1", listOf(
+                            "value1",
+                            listOf(
                                 Token.Field("subKey1", 1, Int::class),
                                 Token.Field("subKey2", 2, Int::class)
                             )
                         ),
                         Token.Class(
-                            "value2", listOf(
+                            "value2",
+                            listOf(
                                 Token.Field("subKey1", 1, Int::class),
                                 Token.Field("subKey2", 2, Int::class)
                             )
                         ),
                         Token.Class(
-                            "value3", listOf(
+                            "value3",
+                            listOf(
                                 Token.Field("subKey1", 1, Int::class),
                                 Token.Field("subKey2", 2, Int::class)
                             )
@@ -208,17 +220,20 @@ internal class ParserImplTest {
                     "pairs",
                     listOf(
                         Token.Class(
-                            "pairs_meeting", listOf(
+                            "pairs_meeting",
+                            listOf(
                                 Token.Field("meeting", "with team.", String::class)
                             )
                         ),
                         Token.Class(
-                            "pairs_meeting", listOf(
+                            "pairs_meeting",
+                            listOf(
                                 Token.Field("meeting", "with boss.", String::class)
                             )
                         ),
                         Token.Class(
-                            "pairs_meeting", listOf(
+                            "pairs_meeting",
+                            listOf(
                                 Token.Field("meeting", "with client.", String::class)
                             )
                         )
