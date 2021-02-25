@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Unreleased]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
 ### Added
 - Continuous integration workflow
+- Release instructions
 ### Changed
 - Make TaskConfiguration an interface
 - Settings class was renamed Configuration
