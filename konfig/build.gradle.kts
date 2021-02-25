@@ -6,9 +6,16 @@ plugins {
     id("java-gradle-plugin")
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.12.0"
+    id ("com.diffplug.spotless") version "5.10.2"
 }
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+
+configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    kotlin {
+        ktlint("0.40.0")
+    }
+}
 
 repositories {
     mavenCentral()

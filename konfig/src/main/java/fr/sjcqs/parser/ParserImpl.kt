@@ -1,6 +1,5 @@
 package fr.sjcqs.parser
 
-
 import fr.sjcqs.ast.KonfigMap
 import fr.sjcqs.ast.Token
 import fr.sjcqs.utils.Logger

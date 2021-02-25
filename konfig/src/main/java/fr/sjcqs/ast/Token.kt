@@ -46,5 +46,3 @@ sealed class Token {
         }
     }
 }
-
-

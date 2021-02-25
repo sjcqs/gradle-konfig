@@ -10,8 +10,6 @@ import fr.sjcqs.transpiler.FileTranspiler
 import fr.sjcqs.utils.Logger
 import fr.sjcqs.utils.MapMerger
 import fr.sjcqs.utils.pathJoin
-import java.io.File
-import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
@@ -23,6 +21,8 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.Yaml
+import java.io.File
+import javax.inject.Inject
 
 abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask() {
     private val logger: Logger = DependencyContainer.taskLogger
@@ -71,7 +71,6 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
         }
     }
 
-
     companion object {
         private const val DEFAULT_CONFIG_NAME = "default"
         private const val GENERATED_DIRECTORY = "generated/source/konfig"
@@ -104,5 +103,4 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
             return pathJoin(buildDir.absolutePath, GENERATED_DIRECTORY, variantDirectoryName)
         }
     }
-
 }

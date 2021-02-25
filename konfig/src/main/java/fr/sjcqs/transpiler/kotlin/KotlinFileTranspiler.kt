@@ -18,7 +18,6 @@ import fr.sjcqs.transpiler.FileWriter
 import fr.sjcqs.utils.Logger
 import java.util.Date
 
-
 class KotlinFileTranspiler(private val logger: Logger) : FileTranspiler {
 
     override fun transpile(packageName: String, root: Token.Root): FileWriter {
@@ -75,10 +74,12 @@ class KotlinFileTranspiler(private val logger: Logger) : FileTranspiler {
         isTopLevel: Boolean,
         constructor: FunSpec.Builder?,
     ): TypeSpec.Builder {
-        return addProperties(list
-            .map { element ->
-                element.toPropertySpec(packageName, isTopLevel, constructor, this)
-            })
+        return addProperties(
+            list
+                .map { element ->
+                    element.toPropertySpec(packageName, isTopLevel, constructor, this)
+                }
+        )
     }
 
     private fun Token.toPropertySpec(
@@ -111,7 +112,6 @@ class KotlinFileTranspiler(private val logger: Logger) : FileTranspiler {
 
         return propertySpec
     }
-
 
     private fun Token.toPropertySpec(
         packageName: String,

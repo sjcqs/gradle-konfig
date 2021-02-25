@@ -1,0 +1,19 @@
+name: "Setup kotlin"
+description: "Setup kotlin using SDKMan!"
+inputs:
+  version:
+    required: true
+    description: "Kotlin version to use"
+runs:
+  using: "composite"
+  steps:
+    - name: Install curl, bash and zip
+      shell: sh
+      run: apt-get update && apt-get install --no-install-recommends -y curl bash zip
+    - name: Install Kotlin
+      shell: bash
+      run: |
+        curl -s "https://get.sdkman.io" | bash
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        sdk install kotlin ${{ inputs.version}}
+        echo "$(sdk home kotlin ${{ inputs.version}})/bin" >> $GITHUB_PATH

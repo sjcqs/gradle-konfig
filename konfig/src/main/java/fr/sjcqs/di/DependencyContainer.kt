@@ -3,7 +3,6 @@ package fr.sjcqs.di
 import fr.sjcqs.parser.Parser
 import fr.sjcqs.parser.ParserImpl
 import fr.sjcqs.task.ConfigurationGenerationTask
-import fr.sjcqs.task.TaskConfigurationProvider
 import fr.sjcqs.transpiler.FileTranspiler
 import fr.sjcqs.transpiler.kotlin.KotlinFileTranspiler
 import fr.sjcqs.utils.GradleLogger

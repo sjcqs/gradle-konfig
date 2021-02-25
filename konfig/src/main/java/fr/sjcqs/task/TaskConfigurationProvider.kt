@@ -35,6 +35,5 @@ object TaskConfigurationProvider {
             get() = extension.libraryVariants
         override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
             get() = extension.sourceSets
-
     }
 }

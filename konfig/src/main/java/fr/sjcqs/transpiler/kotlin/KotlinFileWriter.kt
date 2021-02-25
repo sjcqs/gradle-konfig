@@ -10,5 +10,4 @@ class KotlinFileWriter(private val fileSpec: FileSpec) : FileWriter {
     }
 
     override fun toString() = fileSpec.toString()
-
 }
