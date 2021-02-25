@@ -24,4 +24,4 @@ jobs:
         with:
           version: 1.4.30
       - name: Validate project
-        run: kotlinc -script ./scripts/integration.main.kts
+        run: kotlinc -script ./scripts/integrate.main.kts
