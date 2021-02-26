@@ -1,5 +1,7 @@
 name: Integration
-on: push
+on: 
+  push:
+    tags-ignore: [ "*.*.*" ]
 jobs:
   validate:
     name: "Build, run linter and test project"
