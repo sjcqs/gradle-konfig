@@ -18,8 +18,9 @@ object Integration : CliktCommand(name = "integration") {
     private val skipChecks by option("--skip-checks", help = "Skip checks")
         .flag(default = false)
 
-    private val skipIntegrationTests by option("--skip-integration-test", help = "Skip integration tests")
-        .flag(default = false)
+    private val skipIntegrationTests by option(
+        "--skip-integration-test", help = "Skip integration tests"
+    ).flag(default = false)
 
     override fun run() {
 
