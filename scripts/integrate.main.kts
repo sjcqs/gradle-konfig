@@ -75,7 +75,7 @@ object Integration : CliktCommand(name = "integration") {
     private const val GRADLE_EXEC = "./gradlew"
 
     private fun gradle(task: String, vararg params: String): ProcessBuilder {
-        return ProcessBuilder().command(GRADLE_EXEC, task, "--console=rich", *params)
+        return ProcessBuilder().command(GRADLE_EXEC, task, *params)
     }
 
     private fun Process.redirectOutput(): Process {

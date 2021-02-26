@@ -1,28 +1,13 @@
 ## Releasing
-
-1. Bump version in `gradle.properties`
-
-2. Update the `CHANGELOG.md`:
-   1. Change the `Unreleased` header to the release version.
-   2. Add a link URL to ensure the header link works.
-   3. Add a new `Unreleased` section to the top.
-
-3. Commit
-
+1. Prepare the release
    ```
-   $ git commit -am "Prepare version X.Y.X"
+   $ ./scripts/release.main.kts --action=prepare-release --version=X.Y.Z
    ```
 
-4. Tag
-
-   ```
-   $ git tag -am "Version X.Y.Z" X.Y.Z
-   ```
-
-5. Push!
+2. Push!
 
    ```
    $ git push && git push --tags
    ```
 
-6. Workflows will be triggered and release the plugin to the gradle plugins repository.
+3. Workflows will be triggered and release the plugin to the gradle plugins repository.
