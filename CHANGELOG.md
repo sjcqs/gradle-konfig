@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 [Unreleased]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
+## Changed
+- Read package name from the manifest instead of build config task
 
 ## [1.0.3] - 2021-02-26
 [1.0.3]: https://github.com/sjcqs/gradle-konfig/releases/tag/1.0.3

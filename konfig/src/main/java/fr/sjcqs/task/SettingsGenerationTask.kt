@@ -2,6 +2,7 @@ package fr.sjcqs.task
 
 import com.android.build.gradle.api.BaseVariant
 import com.android.builder.model.ProductFlavor
+import com.android.manifmerger.XmlLoader
 import fr.sjcqs.ast.KonfigMap
 import fr.sjcqs.ast.Token
 import fr.sjcqs.di.DependencyContainer
@@ -10,6 +11,9 @@ import fr.sjcqs.transpiler.FileTranspiler
 import fr.sjcqs.utils.Logger
 import fr.sjcqs.utils.MapMerger
 import fr.sjcqs.utils.pathJoin
+import groovy.util.XmlParser
+import java.io.File
+import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
@@ -21,8 +25,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.Yaml
-import java.io.File
-import javax.inject.Inject
 
 abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask() {
     private val logger: Logger = DependencyContainer.taskLogger
@@ -82,7 +84,7 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
             val name = "generate${variant.name}${Token.Root.ROOT_KEY}"
             return project.tasks.create(name, ConfigurationGenerationTask::class.java) { task ->
                 task.apply {
-                    packageName = variant.generateBuildConfigProvider.get().buildConfigPackageName.get()
+                    packageName = variant.getPackageNameFromManifest()
                     outputDir = project.file(getOutputDirectoryName(project.buildDir, variant.dirName))
 
                     val flavorName = variant.flavorName
@@ -103,4 +105,11 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
             return pathJoin(buildDir.absolutePath, GENERATED_DIRECTORY, variantDirectoryName)
         }
     }
+}
+
+private fun BaseVariant.getPackageNameFromManifest(): String {
+    val manifestFile = sourceSets.map { it.manifestFile }
+        .first(File::exists)
+    val node = XmlParser().parse(manifestFile)
+    return node.attribute("package").toString()
 }
