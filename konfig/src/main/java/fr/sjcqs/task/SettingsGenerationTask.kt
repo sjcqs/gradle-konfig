@@ -11,8 +11,6 @@ import fr.sjcqs.utils.Logger
 import fr.sjcqs.utils.MapMerger
 import fr.sjcqs.utils.pathJoin
 import groovy.util.XmlParser
-import java.io.File
-import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
@@ -24,6 +22,8 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.Yaml
+import java.io.File
+import javax.inject.Inject
 
 abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask() {
     private val logger: Logger = DependencyContainer.taskLogger
