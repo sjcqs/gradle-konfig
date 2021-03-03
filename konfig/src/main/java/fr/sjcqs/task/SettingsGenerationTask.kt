@@ -2,7 +2,6 @@ package fr.sjcqs.task
 
 import com.android.build.gradle.api.BaseVariant
 import com.android.builder.model.ProductFlavor
-import com.android.manifmerger.XmlLoader
 import fr.sjcqs.ast.KonfigMap
 import fr.sjcqs.ast.Token
 import fr.sjcqs.di.DependencyContainer

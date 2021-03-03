@@ -10,6 +10,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import java.io.File
 import java.time.LocalDate
 import java.util.Properties
+import kotlin.system.exitProcess
 
 Delivery.main(args)
 sealed class Action {
@@ -65,16 +66,19 @@ object Delivery : CliktCommand(name = "delivery") {
         changelogFile.writeText(changelogText)
 
         // Commit and tag changes
-        commit("Prepare release $version", CHANGELOG_FILE, PROPERTIES_FILE).start().redirectOutput()
-        tag(version).start().redirectOutput()
+        commit("Prepare release $version", CHANGELOG_FILE, PROPERTIES_FILE)
+            .start()
+            .redirectOutput()
+            .exitProcessOnFailure()
+        tag(version).start().redirectOutput().exitProcessOnFailure()
     }
 
     private fun extractChangelog() {
-        gradle("getChangelog", "-q").start().redirectOutput()
+        gradle("getChangelog", "-q").start().redirectOutput().exitProcessOnFailure()
     }
 
     private fun publish() {
-        gradle("assemble").start().redirectOutput()
+        gradle("assemble").start().redirectOutput().exitProcessOnFailure()
         val publishKey = System.getenv("GRADLE_PUBLISH_KEY")
         val publishSecret = System.getenv("GRADLE_PUBLISH_SECRET")
         val params = if (publishKey != null && publishSecret != null) {
@@ -85,7 +89,7 @@ object Delivery : CliktCommand(name = "delivery") {
         } else {
             emptyArray()
         }
-        gradle("publishPlugins", *params).start().redirectOutput()
+        gradle("publishPlugins", *params).start().redirectOutput().exitProcessOnFailure()
     }
 
     private fun gradle(task: String, vararg params: String): ProcessBuilder {
@@ -103,6 +107,18 @@ object Delivery : CliktCommand(name = "delivery") {
     private fun Process.redirectOutput(): Process {
         inputStream.copyTo(System.out)
         errorStream.copyTo(System.err)
+        return this
+    }
+
+
+    private fun Process.exitProcessOnFailure(message: String? = null): Process {
+        onExit().whenComplete { process, error ->
+            val exitValue = process.exitValue()
+            if (exitValue != 0 || error != null) {
+                if (message != null) echo("$message ($exitValue)")
+                exitProcess(-1)
+            }
+        }
         return this
     }
 

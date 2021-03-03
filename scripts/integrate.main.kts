@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import java.io.File
+import kotlin.system.exitProcess
 
 Integration.main(args)
 
@@ -41,35 +42,41 @@ object Integration : CliktCommand(name = "integration") {
     }
 
     private fun runBuild() {
-        println("Building...")
+        echo("Building...")
         gradle("assemble")
             .start()
             .redirectOutput()
+            .exitProcessOnFailure("[Failed] Building.")
     }
 
     private fun runLint() {
-        println("Lint...")
+        echo("Lint...")
         gradle("spotlessCheck")
             .start()
             .redirectOutput()
+            .exitProcessOnFailure("[Failed] Lint.")
     }
 
     private fun runChecks() {
-        println("Checks..")
+        echo("Checks..")
         gradle("check")
             .start()
             .redirectOutput()
+            .exitProcessOnFailure("[Failed] Check.")
     }
 
     private fun runIntegrationTests() {
-        println("Integrations tests...")
+        echo("Integrations tests...")
         gradle("publishAllPublicationsToTestRepository")
             .start()
             .redirectOutput()
+            .exitProcessOnFailure("[Failed] Integrations tests.")
         gradle("test")
             .directory(File("test-app"))
             .start()
             .redirectOutput()
+            .exitProcessOnFailure("[Failed] Integrations tests.")
+
     }
 
     private const val GRADLE_EXEC = "./gradlew"
@@ -81,6 +88,16 @@ object Integration : CliktCommand(name = "integration") {
     private fun Process.redirectOutput(): Process {
         inputStream.copyTo(System.out)
         errorStream.copyTo(System.err)
+        return this
+    }
+    private fun Process.exitProcessOnFailure(message: String? = null): Process {
+        onExit().whenComplete { process, error ->
+            val exitValue = process.exitValue()
+            if (exitValue != 0 || error != null) {
+                if (message != null) echo("$message ($exitValue)")
+                exitProcess(-1)
+            }
+        }
         return this
     }
 }
