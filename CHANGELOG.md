@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Read package name from the manifest instead of build config task
 ## Added
 - Weekly test with the latest Android Gradle Plugin version
+- Workflow to manually test an Android Gradle Plugin version
 
 ## [1.0.3] - 2021-02-26
 [1.0.3]: https://github.com/sjcqs/gradle-konfig/releases/tag/1.0.3

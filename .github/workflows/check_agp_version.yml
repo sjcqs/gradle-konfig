@@ -1,7 +1,11 @@
-name: Latest Android Gradle Plugin tests
+name: Manually test an Android Gradle Plugin version
 on:
-  schedule:
-    - cron: "0 20 * * 1"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Android Gradle Plugin version to test (by default: latest version)"
+        default: "+"
+        required: true
 jobs:
   validate:
     name: "Build, run linter and test project with latest AGP version"
@@ -28,4 +32,4 @@ jobs:
         with:
           version: 1.4.30
       - name: Validate project
-        run: kotlinc -script ./scripts/integrate.main.kts -- --android-plugin-version="+"
+        run: kotlinc -script ./scripts/integrate.main.kts -- --android-plugin-version="${{ github.event.input.version }}"

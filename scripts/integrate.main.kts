@@ -4,6 +4,7 @@
 @file:DependsOn("com.github.ajalt:clikt:2.8.0")
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import java.io.File
@@ -20,26 +21,23 @@ object Integration : CliktCommand(name = "integration") {
     private val skipChecks by option("--skip-checks", help = "Skip checks")
         .flag(default = false)
 
+    private val force by option("--force", "-f", help = "Force refresh")
+        .flag(default = false)
+
     private val skipIntegrationTests by option(
         "--skip-integration-test",
         help = "Skip integration tests"
     ).flag(default = false)
 
-    private val useLatestAndroidPluginVersion by option(
-        "--latest-android-plugin",
+    private val androidPluginVersion by option(
+        "--android-plugin-version",
         help = "Test with the latest android gradle plugin version."
-    ).flag(default = false)
-
-    private val printLatestAndroidPluginVersion by option(
-        "--print-latest-android-plugin",
-        help = "Print the latest android gradle plugin version."
-    ).flag(default = false)
+    )
 
     override fun run() {
 
-        if (printLatestAndroidPluginVersion) {
+        if (androidPluginVersion != null) {
             printUsedAndroidPluginVersion()
-            return
         }
 
         if (!skipBuild) {
@@ -115,7 +113,8 @@ object Integration : CliktCommand(name = "integration") {
         val commands: List<String> = listOfNotNull(
             GRADLE_EXEC,
             task,
-            if (useLatestAndroidPluginVersion) "-PandroidBuildToolsVersion=+" else null
+            "-PandroidBuildToolsVersion=$androidPluginVersion".takeIf { androidPluginVersion != null },
+            "--rerun-tasks".takeIf { force },
         ) + params
         return ProcessBuilder().command(commands)
     }
