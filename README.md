@@ -1,5 +1,6 @@
 # Konfig Plugin
 [![Integration](https://github.com/sjcqs/gradle-konfig/actions/workflows/integrate.yml/badge.svg)](https://github.com/sjcqs/gradle-konfig/actions/workflows/integrate.yml)
+[![Latest Android Gradle Plugin tests](https://github.com/sjcqs/gradle-konfig/actions/workflows/weekly.yml/badge.svg)](https://github.com/sjcqs/gradle-konfig/actions/workflows/weekly.yml)
 
 This gradle plugin generates a Kotlin `Configuration` object using yaml files for Android.
 It can merge multiple variants yaml files.
