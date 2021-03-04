@@ -1,0 +1,38 @@
+name: Weekly test
+on:
+  schedule:
+    - cron: "0 20 * * 1"
+  workflow_dispatch:
+jobs:
+  validate:
+    name: "Build, run linter and test project with latest AGP version"
+    runs-on: ubuntu-latest
+    outputs:
+      android_plugin_version: ${{ steps.agp_version.outputs.version }}
+    container:
+      image: docker://fabernovel/android:api-29-v1.3.0
+    env:
+      JAVA_TOOL_OPTIONS: "-XX:MinRAMPercentage=20.0 -XX:MaxRAMPercentage=90.0"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process"
+    steps:
+      - name: Checkout the project
+        uses: actions/checkout@v2
+      - name: Gradle cache
+        uses: actions/cache@v2.1.1
+        with:
+          path: /root/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+      - name: Install Kotlin
+        uses: ./.github/actions/setup_kotlin
+        with:
+          version: 1.4.30
+      - name: Print used android gradle plugin version
+        id: agp_version
+        run: |
+          version=$(kotlinc -script ./scripts/integrate.main.kts -- --print-latest-android-plugin)
+          echo "${version}"
+          echo "::set-output name=version::${version}"
+      - name: Validate project
+        run: kotlinc -script ./scripts/integrate.main.kts -- --latest-android-plugin

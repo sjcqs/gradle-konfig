@@ -1,5 +1,6 @@
 #!/usr/bin/env -S kotlinc -script --
 
+@file:CompilerOptions("-jvm-target", "1.8")
 @file:DependsOn("com.github.ajalt:clikt:2.8.0")
 
 import com.github.ajalt.clikt.core.CliktCommand
@@ -20,29 +21,61 @@ object Integration : CliktCommand(name = "integration") {
         .flag(default = false)
 
     private val skipIntegrationTests by option(
-        "--skip-integration-test", help = "Skip integration tests"
+        "--skip-integration-test",
+        help = "Skip integration tests"
+    ).flag(default = false)
+
+    private val useLatestAndroidPluginVersion by option(
+        "--latest-android-plugin",
+        help = "Test with the latest android gradle plugin version."
+    ).flag(default = false)
+
+    private val printLatestAndroidPluginVersion by option(
+        "--print-latest-android-plugin",
+        help = "Print the latest android gradle plugin version."
     ).flag(default = false)
 
     override fun run() {
 
+        if (printLatestAndroidPluginVersion) {
+            printUsedAndroidPluginVersion()
+            return
+        }
+
         if (!skipBuild) {
+            echo("Building...")
             runBuild()
         }
         if (!skipLint) {
+            echo("Lint...")
             runLint()
         }
 
         if (!skipChecks) {
+            echo("Checks..")
             runChecks()
         }
 
         if (!skipIntegrationTests) {
+            echo("Integrations tests...")
             runIntegrationTests()
         }
     }
 
+    private fun printUsedAndroidPluginVersion() {
+        val process = gradle(
+            "konfig:dependencyInsight",
+            "--configuration=compileClasspath",
+            "--dependency=com.android.tools.build:gradle",
+            "--quiet"
+        ).start().exitProcessOnFailure("[Failed] Latest Android Gradle Plugin version.")
+
+        process.inputStream.bufferedReader().useLines { lines ->
+            echo(lines.first())
+        }
+    }
+
     private fun runBuild() {
-        echo("Building...")
         gradle("assemble")
             .start()
             .redirectOutput()
@@ -50,7 +83,6 @@ object Integration : CliktCommand(name = "integration") {
     }
 
     private fun runLint() {
-        echo("Lint...")
         gradle("spotlessCheck")
             .start()
             .redirectOutput()
@@ -58,7 +90,6 @@ object Integration : CliktCommand(name = "integration") {
     }
 
     private fun runChecks() {
-        echo("Checks..")
         gradle("check")
             .start()
             .redirectOutput()
@@ -66,7 +97,6 @@ object Integration : CliktCommand(name = "integration") {
     }
 
     private fun runIntegrationTests() {
-        echo("Integrations tests...")
         gradle("publishAllPublicationsToTestRepository")
             .start()
             .redirectOutput()
@@ -82,7 +112,12 @@ object Integration : CliktCommand(name = "integration") {
     private const val GRADLE_EXEC = "./gradlew"
 
     private fun gradle(task: String, vararg params: String): ProcessBuilder {
-        return ProcessBuilder().command(GRADLE_EXEC, task, *params)
+        val commands: List<String> = listOfNotNull(
+            GRADLE_EXEC,
+            task,
+            if (useLatestAndroidPluginVersion) "-PandroidBuildToolsVersion=+" else null
+        ) + params
+        return ProcessBuilder().command(commands)
     }
 
     private fun Process.redirectOutput(): Process {
@@ -90,6 +125,7 @@ object Integration : CliktCommand(name = "integration") {
         errorStream.copyTo(System.err)
         return this
     }
+
     private fun Process.exitProcessOnFailure(message: String? = null): Process {
         onExit().whenComplete { process, error ->
             val exitValue = process.exitValue()
