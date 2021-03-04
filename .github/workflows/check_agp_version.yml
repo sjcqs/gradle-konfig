@@ -32,4 +32,4 @@ jobs:
         with:
           version: 1.4.30
       - name: Validate project
-        run: kotlinc -script ./scripts/integrate.main.kts -- --android-plugin-version="${{ github.event.input.version }}"
+        run: kotlinc -script ./scripts/integrate.main.kts -- --android-plugin-version="${{ github.event.inputs.version }}"
