@@ -15,17 +15,9 @@ jobs:
     steps:
       - name: Checkout the project
         uses: actions/checkout@v2
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Install Kotlin
         uses: ./.github/actions/setup_kotlin
         with:
-          version: 1.4.30
+          version: 1.7.21
       - name: Validate project
         run: kotlinc -script ./scripts/integrate.main.kts
