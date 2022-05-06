@@ -15,9 +15,13 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
@@ -25,25 +29,28 @@ import org.yaml.snakeyaml.Yaml
 import java.io.File
 import javax.inject.Inject
 
+@CacheableTask
 abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask() {
-    private val logger: Logger = DependencyContainer.taskLogger
-    private val yaml: Yaml = DependencyContainer.yaml
-    private val parser: Parser = DependencyContainer.parser
-    private val transpiler: FileTranspiler = DependencyContainer.transpiler
-    private val merger: MapMerger = DependencyContainer.mapMerger
 
     @get:Input
     lateinit var packageName: String
 
     @get:InputFiles
     @get:Incremental
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val settingsFiles: ConfigurableFileCollection
 
     @get:OutputDirectory
-    lateinit var outputDir: File
+    abstract val outputDir: DirectoryProperty
 
     @TaskAction
     fun execute(inputChanges: InputChanges) {
+        val logger: Logger = DependencyContainer.logger
+        val yaml: Yaml = DependencyContainer.yaml
+        val parser: Parser = DependencyContainer.parser
+        val transpiler: FileTranspiler = DependencyContainer.transpiler
+        val merger: MapMerger = DependencyContainer.mapMerger
+
         logger.i("Generating settings: (incremental: ${inputChanges.isIncremental})")
         inputChanges.getFileChanges(settingsFiles).forEach { change ->
             logger.i("${change.changeType}: ${change.normalizedPath}")
@@ -57,18 +64,7 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
         if (settings.isNotEmpty()) {
             val root = parser.parse(settings)
             val fileSpec = transpiler.transpile(packageName, root)
-            fileSpec.writeTo(outputDir.toPath())
-        }
-    }
-
-    private fun String.toSecretConfig(): String = "${this}_secret"
-
-    private fun Yaml.loadConfig(file: File): KonfigMap {
-        if (!file.isFile) {
-            return emptyMap()
-        }
-        return file.reader().use {
-            loadAs(it, LOAD_CLASS.java) ?: emptyMap()
+            fileSpec.writeTo(outputDir.get().asFile.toPath())
         }
     }
 
@@ -84,7 +80,7 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
             return project.tasks.create(name, ConfigurationGenerationTask::class.java) { task ->
                 task.apply {
                     packageName = variant.getPackageNameFromManifest()
-                    outputDir = project.file(getOutputDirectoryName(project.buildDir, variant.dirName))
+                    outputDir.set(project.file(getOutputDirectoryName(project.buildDir, variant.dirName)))
 
                     val flavorName = variant.flavorName
                     val buildType = variant.buildType.name
@@ -97,6 +93,17 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
                             .map { project.file(pathJoin(INPUT_DIRECTORY, "$it.yml")) }
                     )
                 }
+            }
+        }
+
+        private fun String.toSecretConfig(): String = "${this}_secret"
+
+        private fun Yaml.loadConfig(file: File): KonfigMap {
+            if (!file.isFile) {
+                return emptyMap()
+            }
+            return file.reader().use {
+                loadAs(it, LOAD_CLASS.java) ?: emptyMap()
             }
         }
 

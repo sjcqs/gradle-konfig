@@ -1,15 +1,11 @@
 package fr.sjcqs.utils
 
 import org.gradle.api.logging.Logging.getLogger
-import kotlin.reflect.KClass
+import javax.inject.Inject
 import org.gradle.api.logging.Logger as BaseGradleLogger
 
-class GradleLogger<out T : Any>(instance: KClass<T>? = null) : Logger {
-    private val logger: BaseGradleLogger = if (instance != null) {
-        getLogger(instance.java)
-    } else {
-        getLogger(DEFAULT_TAG)
-    }
+open class GradleLogger @Inject constructor() : Logger {
+    private val logger: BaseGradleLogger = getLogger(DEFAULT_TAG)
 
     override fun l(message: String, vararg args: Any) {
         logger.lifecycle(message, args)
