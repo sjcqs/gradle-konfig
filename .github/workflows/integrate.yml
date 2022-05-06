@@ -18,6 +18,6 @@ jobs:
       - name: Install Kotlin
         uses: ./.github/actions/setup_kotlin
         with:
-          version: 1.7.21
+          version: 1.6.21
       - name: Validate project
         run: kotlinc -script ./scripts/integrate.main.kts
