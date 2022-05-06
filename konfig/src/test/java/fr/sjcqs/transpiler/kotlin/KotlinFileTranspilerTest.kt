@@ -124,7 +124,7 @@ internal class KotlinFileTranspilerTest {
             |
             |  public data class MapList(
             |    @JvmField
-            |    public val key: String
+            |    public val key: String,
             |  )
             |}
             |
@@ -201,18 +201,15 @@ internal class KotlinFileTranspilerTest {
         )
         private val MAP_FILE =
             """
-            |import Configuration.Root0.Value0
-            |import Configuration.Root0.Value1
-            |import Configuration.Root0.Value2
-            |import Configuration.Root0.Value3
             |import kotlin.Int
             |import kotlin.String
             |import kotlin.jvm.JvmField
             |
             |public object Configuration {
             |  @JvmField
-            |  public val root0: Root0 = Root0(Value0("value", "value"), Value1("value", "value"),
-            |      Value2("value", "value"), Value3("value", "value"))
+            |  public val root0: Root0 = Root0(Configuration.Root0.Value0("value", "value"),
+            |      Configuration.Root0.Value1("value", "value"), Configuration.Root0.Value2("value", "value"),
+            |      Configuration.Root0.Value3("value", "value"))
             |
             |  @JvmField
             |  public val root1: Root1 = Root1(Configuration.Root1.Value0(1, 2), Configuration.Root1.Value1(1,
@@ -226,34 +223,34 @@ internal class KotlinFileTranspilerTest {
             |    @JvmField
             |    public val value2: Value2,
             |    @JvmField
-            |    public val value3: Value3
+            |    public val value3: Value3,
             |  ) {
             |    public data class Value0(
             |      @JvmField
             |      public val subKey1: String,
             |      @JvmField
-            |      public val subKey2: String
+            |      public val subKey2: String,
             |    )
             |
             |    public data class Value1(
             |      @JvmField
             |      public val subKey1: String,
             |      @JvmField
-            |      public val subKey2: String
+            |      public val subKey2: String,
             |    )
             |
             |    public data class Value2(
             |      @JvmField
             |      public val subKey1: String,
             |      @JvmField
-            |      public val subKey2: String
+            |      public val subKey2: String,
             |    )
             |
             |    public data class Value3(
             |      @JvmField
             |      public val subKey1: String,
             |      @JvmField
-            |      public val subKey2: String
+            |      public val subKey2: String,
             |    )
             |  }
             |
@@ -265,34 +262,34 @@ internal class KotlinFileTranspilerTest {
             |    @JvmField
             |    public val value2: Value2,
             |    @JvmField
-            |    public val value3: Value3
+            |    public val value3: Value3,
             |  ) {
             |    public data class Value0(
             |      @JvmField
             |      public val subKey1: Int,
             |      @JvmField
-            |      public val subKey2: Int
+            |      public val subKey2: Int,
             |    )
             |
             |    public data class Value1(
             |      @JvmField
             |      public val subKey1: Int,
             |      @JvmField
-            |      public val subKey2: Int
+            |      public val subKey2: Int,
             |    )
             |
             |    public data class Value2(
             |      @JvmField
             |      public val subKey1: Int,
             |      @JvmField
-            |      public val subKey2: Int
+            |      public val subKey2: Int,
             |    )
             |
             |    public data class Value3(
             |      @JvmField
             |      public val subKey1: Int,
             |      @JvmField
-            |      public val subKey2: Int
+            |      public val subKey2: Int,
             |    )
             |  }
             |}
@@ -338,7 +335,7 @@ internal class KotlinFileTranspilerTest {
             |
             |  public data class PairsMeeting(
             |    @JvmField
-            |    public val meeting: String
+            |    public val meeting: String,
             |  )
             |}
             |

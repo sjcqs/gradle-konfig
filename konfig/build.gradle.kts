@@ -3,24 +3,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("java-gradle-plugin")
-    id("maven-publish")
-    id("com.gradle.plugin-publish") version "0.12.0"
-    id ("com.diffplug.spotless") version "5.10.2"
+    id("com.gradle.plugin-publish") version "1.0.0-rc-1"
+    id ("com.diffplug.spotless") version "6.5.2"
 }
 
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+spotless {
     kotlin {
-        ktlint("0.40.0")
+        ktlint("0.45.2")
     }
-}
-
-repositories {
-    mavenCentral()
-    google()
-    jcenter()
 }
 
 
@@ -62,6 +54,8 @@ gradlePlugin {
     plugins {
         create(pluginName) {
             id = pluginId
+            displayName = "Gradle Konfig"
+            version = pluginVersion
             implementationClass = "fr.sjcqs.konfig.KonfigPlugin"
         }
     }
@@ -72,12 +66,6 @@ pluginBundle {
     vcsUrl = "https://github.com/sjcqs/gradle-konfig"
     description = "Gradle plugin to add multi-variants yaml settings to Android."
     tags = setOf("gradle", "plugin", "android", "config")
-    (plugins) {
-        (pluginName) {
-            displayName = "Gradle Konfig"
-            version = pluginVersion
-        }
-    }
 }
 
 publishing {

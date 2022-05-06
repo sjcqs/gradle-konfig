@@ -4,7 +4,6 @@
 @file:DependsOn("com.github.ajalt:clikt:2.8.0")
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import java.io.File
@@ -27,6 +26,16 @@ object Integration : CliktCommand(name = "integration") {
     private val skipIntegrationTests by option(
         "--skip-integration-test",
         help = "Skip integration tests"
+    ).flag(default = false)
+
+    private val skipConfigurationCacheCheck by option(
+        "--skip-configuration-cache-check",
+        help = "Skip checking configuration cache compatibility"
+    ).flag(default = false)
+
+    private val skipBuildCacheCheck by option(
+        "--skip-build-cache-check",
+        help = "Skip checking build cache compatibility"
     ).flag(default = false)
 
     private val androidPluginVersion by option(
@@ -57,6 +66,15 @@ object Integration : CliktCommand(name = "integration") {
         if (!skipIntegrationTests) {
             echo("Integrations tests...")
             runIntegrationTests()
+        }
+
+        if (!skipConfigurationCacheCheck) {
+            echo("Checking configuration cache compatibility")
+            checkConfigurationCacheCompatibility()
+        }
+        if (!skipConfigurationCacheCheck) {
+            echo("Checking build cache compatibility")
+            checkConfigurationCacheCompatibility()
         }
     }
 
@@ -105,6 +123,36 @@ object Integration : CliktCommand(name = "integration") {
             .redirectOutput()
             .exitProcessOnFailure("[Failed] Integrations tests.")
 
+    }
+
+    private fun checkConfigurationCacheCompatibility() {
+        gradle("clean", "--rerun-tasks")
+            .directory(File("test-app"))
+            .start()
+            .redirectOutput()
+            .exitProcessOnFailure("[Failed] Configuration cache compatibility.")
+        repeat(2) {
+            gradle("test","--configuration-cache",)
+                .directory(File("test-app"))
+                .start()
+                .redirectOutput()
+                .exitProcessOnFailure("[Failed] Configuration cache compatibility.")
+        }
+    }
+
+    private fun checkCBuildCacheCompatibility() {
+        gradle("clean")
+            .directory(File("test-app"))
+            .start()
+            .redirectOutput()
+            .exitProcessOnFailure("[Failed] Build cache compatibility.")
+        repeat(2) {
+            gradle("test","--build-cache",)
+                .directory(File("test-app"))
+                .start()
+                .redirectOutput()
+                .exitProcessOnFailure("[Failed] Build cache compatibility.")
+        }
     }
 
     private const val GRADLE_EXEC = "./gradlew"
