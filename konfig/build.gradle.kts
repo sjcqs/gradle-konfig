@@ -65,7 +65,7 @@ pluginBundle {
     website = "https://github.com/sjcqs/gradle-konfig"
     vcsUrl = "https://github.com/sjcqs/gradle-konfig"
     description = "Gradle plugin to add multi-variants yaml settings to Android."
-    tags = setOf("gradle", "plugin", "android", "config")
+    tags = setOf("android", "config", "yaml", "variants")
 }
 
 publishing {
