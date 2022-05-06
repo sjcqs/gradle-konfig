@@ -10,9 +10,9 @@ import fr.sjcqs.utils.MapMerger
 import org.yaml.snakeyaml.Yaml
 
 object DependencyContainer {
-    val logger: Logger = GradleLogger()
-    val yaml = Yaml()
-    val transpiler: FileTranspiler = KotlinFileTranspiler(logger)
-    val parser: Parser = ParserImpl(logger)
-    val mapMerger: MapMerger = MapMerger(logger)
+    val logger: Logger get() = GradleLogger()
+    val yaml get() = Yaml()
+    val transpiler: FileTranspiler get() = KotlinFileTranspiler(logger)
+    val parser: Parser get() = ParserImpl(logger)
+    val mapMerger: MapMerger get() = MapMerger(logger)
 }
