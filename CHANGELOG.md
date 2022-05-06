@@ -6,16 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 [Unreleased]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
-## Changed
+
+## [1.0.5] - 2022-05-06
+[1.0.5]: https://github.com/sjcqs/gradle-konfig/releases/tag/1.0.5
+### Changed
 - Bump dependencies (Kotlin, Gradle, JUnit)
-## Added
+### Added
 - Support Gradle configuration cache
 - Support Gradle build cache
+
 ## [1.0.4]
 [1.0.4]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
-## Changed
+### Changed
 - Read package name from the manifest instead of build config task
-## Added
+### Added
 - Weekly test with the latest Android Gradle Plugin version
 - Workflow to manually test an Android Gradle Plugin version
 
