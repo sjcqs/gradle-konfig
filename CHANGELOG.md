@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 [Unreleased]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
+### Fixed
+- Set a JVM language version
 
 ## [1.0.5] - 2022-05-06
 [1.0.5]: https://github.com/sjcqs/gradle-konfig/releases/tag/1.0.5

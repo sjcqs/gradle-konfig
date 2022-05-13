@@ -112,7 +112,7 @@ object Delivery : CliktCommand(name = "delivery") {
 
 
     private fun Process.exitProcessOnFailure(message: String? = null): Process {
-        onExit().whenComplete { process, error ->
+        onExit().whenComplete { process: Process, error: Throwable? ->
             val exitValue = process.exitValue()
             if (exitValue != 0 || error != null) {
                 if (message != null) echo("$message ($exitValue)")

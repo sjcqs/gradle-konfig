@@ -9,6 +9,12 @@ plugins {
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
 spotless {
     kotlin {
         ktlint("0.45.2")
