@@ -7,8 +7,9 @@ import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 
-object TaskConfigurationProvider {
+object TaskConfigurationFactory {
     private const val APPLICATION_PLUGIN_ID: String = "com.android.application"
     private const val LIBRARY_PLUGIN_ID: String = "com.android.library"
 
@@ -25,6 +26,7 @@ object TaskConfigurationProvider {
         private val extension = project.extensions.getByType(AppExtension::class.java)
         override val variants: DomainObjectCollection<out BaseVariant>
             get() = extension.applicationVariants
+        override val namespaceProvider: Provider<String?> = project.provider { extension.namespace }
         override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
             get() = extension.sourceSets
     }
@@ -33,6 +35,7 @@ object TaskConfigurationProvider {
         private val extension = project.extensions.getByType(LibraryExtension::class.java)
         override val variants: DomainObjectCollection<out BaseVariant>
             get() = extension.libraryVariants
+        override val namespaceProvider: Provider<String?> = project.provider { extension.namespace }
         override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
             get() = extension.sourceSets
     }
