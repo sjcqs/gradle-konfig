@@ -16,6 +16,7 @@ import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
@@ -23,6 +24,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.Yaml
@@ -70,17 +72,25 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
 
     companion object {
         private const val DEFAULT_CONFIG_NAME = "default"
-        private const val GENERATED_DIRECTORY = "generated/source/konfig"
         private const val INPUT_DIRECTORY = "config"
         private val LOAD_CLASS = mutableMapOf<String, Any?>()::class
 
         @Throws(InvalidUserDataException::class)
-        fun create(project: Project, variant: BaseVariant): ConfigurationGenerationTask {
+        fun register(
+            project: Project,
+            variant: BaseVariant,
+            namespaceProvider: Provider<String?>,
+            targetDirectory: File
+        ): TaskProvider<ConfigurationGenerationTask> {
             val name = "generate${variant.name}${Token.Root.ROOT_KEY}"
-            return project.tasks.create(name, ConfigurationGenerationTask::class.java) { task ->
+            return project.tasks.register(name, ConfigurationGenerationTask::class.java) { task ->
                 task.apply {
-                    packageName = variant.getPackageNameFromManifest()
-                    outputDir.set(project.file(getOutputDirectoryName(project.buildDir, variant.dirName)))
+                    /* We use the module namespace then we fall back to the packageName declared in the manifest*/
+                    packageName = namespaceProvider.get() ?: variant.getPackageNameFromManifest() ?: error(
+                        "Failed to found the module packageName.\n" +
+                            "Either declare a namespace in build.gradle or a packageName in your manifest file."
+                    )
+                    outputDir.set(targetDirectory)
 
                     val flavorName = variant.flavorName
                     val buildType = variant.buildType.name
@@ -107,15 +117,12 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
             }
         }
 
-        private fun getOutputDirectoryName(buildDir: File, variantDirectoryName: String): String {
-            return pathJoin(buildDir.absolutePath, GENERATED_DIRECTORY, variantDirectoryName)
+        private fun BaseVariant.getPackageNameFromManifest(): String? {
+            val manifestFile = sourceSets.map { it.manifestFile }
+                .firstOrNull(File::exists)
+                ?: return null
+            val node = XmlParser().parse(manifestFile)
+            return node.attribute("package")?.toString().orEmpty()
         }
     }
-}
-
-private fun BaseVariant.getPackageNameFromManifest(): String {
-    val manifestFile = sourceSets.map { it.manifestFile }
-        .first(File::exists)
-    val node = XmlParser().parse(manifestFile)
-    return node.attribute("package").toString()
 }

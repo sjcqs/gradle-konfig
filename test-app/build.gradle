@@ -8,10 +8,7 @@ buildscript {
             name = "test"
             url = uri("../test-repository")
         }
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-            content { includeGroupByRegex("org.jetbrains.*") }
-        }
+        gradlePluginPortal()
         google()
         mavenCentral()
     }

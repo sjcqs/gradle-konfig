@@ -27,7 +27,7 @@ class MapMerger(private val logger: Logger) {
                     logger.d("$key: merging two maps $value and $otherValue")
                     map[key] = deepMerge((value as KonfigMap), otherValue as KonfigMap)
                 } else if (value is List<*> && otherValue is List<*>) {
-                    logger.d("$key: merging two list ${value.joinToString()} with ${otherValue.joinToString()}")
+                    logger.d("$key: merging two list $value with $otherValue")
                     map[key] = value.merge(otherValue)
                 } else {
                     logger.d("$key: overriding $value with $otherValue")
