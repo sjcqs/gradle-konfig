@@ -6,6 +6,7 @@ apply plugin: "fr.sjcqs.konfig"
 
 android {
     compileSdkVersion 32
+    namespace "com.polidea.configsample"
     defaultConfig {
         applicationId "com.sjcqs.configsample"
         minSdkVersion 22
