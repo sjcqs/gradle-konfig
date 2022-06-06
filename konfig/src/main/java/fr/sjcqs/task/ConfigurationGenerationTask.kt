@@ -86,7 +86,7 @@ abstract class ConfigurationGenerationTask @Inject constructor() : DefaultTask()
             return project.tasks.register(name, ConfigurationGenerationTask::class.java) { task ->
                 task.apply {
                     /* We use the module namespace then we fall back to the packageName declared in the manifest*/
-                    packageName = namespaceProvider.get() ?: variant.getPackageNameFromManifest() ?: error(
+                    packageName = namespaceProvider.orNull ?: variant.getPackageNameFromManifest() ?: error(
                         "Failed to found the module packageName.\n" +
                             "Either declare a namespace in build.gradle or a packageName in your manifest file."
                     )

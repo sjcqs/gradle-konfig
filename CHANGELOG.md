@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 [Unreleased]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
+### Fixed
+- Fixed provider nullable issue
 
 ## [1.1.0] - 2022-06-06
 [1.1.0]: https://github.com/sjcqs/gradle-konfig/releases/tag/1.1.0
