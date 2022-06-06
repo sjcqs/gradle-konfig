@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 [Unreleased]: https://github.com/sjcqs/gradle-konfig/compare/1.0.0...HEAD
+
+## [1.1.0] - 2022-06-06
+[1.1.0]: https://github.com/sjcqs/gradle-konfig/releases/tag/1.1.0
 ### Added
 - Support the namespace attribute from `android` extension to set the Configuration package name.
 
